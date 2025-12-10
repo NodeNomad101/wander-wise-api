@@ -1,0 +1,64 @@
+@BASE_URL = http://localhost:3000
+
+### Create a new user
+POST {{BASE_URL}}/users
+Content-Type: application/json
+
+{
+    "name": "Muskan Doe",
+    "email": "muskan.doe@example.com",
+    "password": "password"
+}
+
+### Get all users
+GET {{BASE_URL}}/users
+
+### Get user by id
+GET {{BASE_URL}}/users/6922dbdb1517c319a9c9d7c1
+
+### Update user by id
+PATCH {{BASE_URL}}/users/6922dbdb1517c319a9c9d7c1
+Content-Type: application/json
+
+{
+    "email": "jack.doe@example.com"
+}
+
+### Delete user by id
+DELETE {{BASE_URL}}/users/6922dbdb1517c319a9c9d7c1
+
+### Create a new baggage
+POST {{BASE_URL}}/baggage
+Content-Type: application/json
+
+{
+    "name": "Red Suitcase",
+    "completed": false
+}
+
+### Get all baggage
+GET {{BASE_URL}}/baggage
+
+### Get baggage by id
+GET {{BASE_URL}}/baggage/691af6ce679594af902955ef
+
+### Update baggage
+PATCH {{BASE_URL}}/baggage/691af6ce679594af902955ef
+Content-Type: application/json
+
+{
+    "name": "Blue Suitcase",
+    "completed": true
+}
+
+### Delete baggage
+DELETE {{BASE_URL}}/baggage/691af6ce679594af902955ef
+
+### Login user
+POST {{BASE_URL}}/auth/login
+Content-Type: application/json
+
+{
+    "email": "john.doe7@example.com",
+    "password": "password"
+}
