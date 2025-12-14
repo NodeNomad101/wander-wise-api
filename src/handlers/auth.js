@@ -1,7 +1,7 @@
 import { login, registerUser } from "../services/auth.js";
-import {Router} from "express";
+import { Router } from "express";
 import { loginValidator } from "../validators/auth.js";
-import useValidators from "../middlewares/userValidator.js";
+import useValidators from "../middlewares/useValidator.js";
 
 const AUTH_ROUTER = Router();
 
@@ -9,21 +9,22 @@ AUTH_ROUTER.post("/register", async (req, res, next) => {
   try {
     const { user, token } = await register(req.body);
     res.status(201).json(result);
-    } catch (error) {
-    next(error);
-  }
-});
-
-AUTH_ROUTER.post("/login",
-  useValidators(loginValidator),
-  async (req, res, next) => {
-  try {
-    const { user, token } = await login(req.body); 
-    res.status(200).json(result);
   } catch (error) {
     next(error);
   }
 });
 
-export default AUTH_ROUTER;
+AUTH_ROUTER.post(
+  "/login",
+  useValidators(loginValidator),
+  async (req, res, next) => {
+    try {
+      const result = await login(req.body);
+      res.status(200).json(result);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
+export default AUTH_ROUTER;

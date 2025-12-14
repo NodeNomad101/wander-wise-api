@@ -8,12 +8,12 @@ import {
 } from "../services/user.js";
 
 import { createUserValidator, updateUserValidator } from "../validators/user.js";
-import useValidators from "../middlewares/userValidator.js";
+import useValidator from "../middlewares/useValidator.js";
 
 const USER_ROUTER = Router();
 
 
-USER_ROUTER.post("/",useValidators(createUserValidator), async (req, res, next) => {
+USER_ROUTER.post("/",useValidator(createUserValidator), async (req, res, next) => {
   try{
   const user = await createUser(req.body); // Pass the request body to createUser
   res.status(201).json(user); // Respond with the created user and 201 status code
@@ -41,7 +41,7 @@ USER_ROUTER.get("/:id", async (req, res) => {
 });
 
 USER_ROUTER.patch("/:id",
-  useValidators(updateUserValidator),
+  useValidator(updateUserValidator),
    async (req, res, next) => {
   try{
   const user = await updateUserById(req.params.id, req.body);
