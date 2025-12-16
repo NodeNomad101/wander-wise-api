@@ -7,6 +7,7 @@ import { authMiddleware } from "./middlewares/auth.js";
 
 
 const APP_SERVER = express();
+const PORT = process.env.PORT;
 
 connectDB()
   .then(() => {})
@@ -24,5 +25,5 @@ APP_SERVER.use("/auth",AUTH_ROUTER); // Use the AUTH_ROUTER for /auth routes
 APP_SERVER.use(errorMiddleware);
 
 APP_SERVER.listen(process.env.PORT, () => {
-  console.log(`Server is running on port ${process.env.PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 });
