@@ -1,28 +1,50 @@
 import Baggage from "../models/baggage.js";
+import NotFoundError from "../errors/not-found-error.js";
 
-const createBaggage = async (data) => {
-  const baggage = await Baggage.create(data);
+export const createBaggage = async (baggageData) => {
+  const baggage = await Baggage.create(baggageData);
   return baggage;
 };
 
-const findAllBaggage = async () => {
-  const items = await Baggage.find({});
-  return items;
+export const getAllBaggages = async (tripId, userId) => {
+  const baggages = await Baggage.find({ trip: tripId, user: userId });
+  return baggages;
 };
 
-const findBaggageById = async (id) => {
-  const item = await Baggage.findById(id);
-  return item;
+export const getBaggageById = async (id, userId, tripId) => {
+  const baggage = await Baggage.findOne({
+    _id: id,
+    user: userId,
+    trip: tripId,
+  });
+  if (!baggage) {
+    throw new NotFoundError("Baggage not found");
+  }
+  return baggage;
 };
 
-const updateBaggageById = async (id, update) => {
-  const updated = await Baggage.findByIdAndUpdate(id, update, { new: true });
-  return updated;
+export const updateBaggage = async (id, userId, tripId, baggageData) => {
+  const baggage = await Baggage.findOneAndUpdate(
+    { _id: id, user: userId, trip: tripId },
+    baggageData,
+    {
+      new: true,
+    }
+  );
+  if (!baggage) {
+    throw new NotFoundError("Baggage not found");
+  }
+  return baggage;
 };
 
-const deleteBaggageById = async (id) => {
-  const deleted = await Baggage.findByIdAndDelete(id);
-  return deleted;
+export const deleteBaggage = async (id, userId, tripId) => {
+  const baggage = await Baggage.findOneAndDelete({
+    _id: id,
+    user: userId,
+    trip: tripId,
+  });
+  if (!baggage) {
+    throw new NotFoundError("Baggage not found");
+  }
+  return baggage;
 };
-
-export { createBaggage, findAllBaggage, findBaggageById, updateBaggageById, deleteBaggageById };
