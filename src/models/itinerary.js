@@ -35,6 +35,6 @@ const itinerarySchema = new Schema(
     { timestamps: true}
 );
 
-const Itinerary = model("Itinerary");
+const Itinerary = model("Itinerary",itinerarySchema);
 
 export default Itinerary;

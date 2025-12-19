@@ -1,57 +1,67 @@
-import Itenierary from "../models/itenerary.js";
+import Itinerary from "../models/itinerary.js";
 import NotFoundError from "../errors/not-found-error.js";
-import { getTripById, } from "./trip.js";
 import ValidationError from "../errors/validation-error.js";
+import { getTripById } from "./trip.js";
 
-export const createItenerary = async (iteneraryData) => {
-    const trip = await getTripById(iteneraryData.trip, iteneraryData.user);
+export const createItinerary = async (itineraryData) => {
+  const trip = await getTripById(itineraryData.trip, itineraryData.user);
 
-    if (
-        new Date(iteneraryData.date) < new Date(trip.startDate) ||
-        new Date(itineraryDatea.date) > new Date(trip.endDate)
-    ) {
-        throw new ValidationError("Itenerary date must be within trip dates");
-    }
+  if (
+    new Date(itineraryData.date) > new Date(trip.startDate) ||
+    new Date(itineraryData.date) < new Date(trip.endDate)
+  ) {
+    throw new ValidationError("Itinerary date must be within the trip dates");
+  }
 
-    const itenerary = await Itenerary.create(iteneraryData);
-    return itenerary;
-}
-export const getItenerariesByTrip = async (tripId, userId) => {
-    await getTripById(tripId, userId);
-    const iteneraries = await Itenierary.find({ trip: tripId, user: userId });
-    return iteneraries;
+  const itinerary = await Itinerary.create(itineraryData);
+  return itinerary;
 };
-export const getIteneraryById = async (id, userId, tripId) => {
-    await getTripById(tripId, userId);
-    const itenerary = await Itenierary.findOne({ _id: id, user: userId, trip: tripId });
-    if (!itenerary) {
-        throw new NotFoundError("Itenerary not found");
-    }
-    return itenerary;
+
+export const getAllItineraries = async (tripId, userId) => {
+  await getTripById(tripId, userId);
+  const itineraries = await Itinerary.find({ trip: tripId });
+  return itineraries;
 };
-export const updateIteneraryById = async (id, itineraryData, userId, tripId) => {
-    await getTripById(tripId, userId);
-    if (
-        new Date(itineraryData.date) < new Date(trip.startDate) ||
-        new Date(itineraryData.date) > new Date(trip.endDate)
-    ) {
-        throw new ValidationError("Itenerary date must be within trip dates");
-    }
-    const updated = await Itenierary.findOneAndUpdate(
-        { _id: id, user: userId, trip: tripId },
-        itineraryData,
-        { new: true }
-    );
-    if (!updated) {
-        throw new NotFoundError("Itenerary not found");
-    }
-    return updated;
+
+export const getItineraryById = async (id, userId, tripId) => {
+  await getTripById(tripId, userId);
+  const itinerary = await Itinerary.findById(id);
+  if (!itinerary) {
+    throw new NotFoundError("Itinerary not found");
+  }
+  return itinerary;
 };
-export const deleteIteneraryById = async (id, userId, tripId) => {
-    await getTripById(tripId, userId);
-    const deleted = await Itenierary.findOneAndDelete({ _id: id, trip: tripId });
-    if (!deleted) {
-        throw new NotFoundError("Itenerary not found");
+
+export const updateItinerary = async (id, userId, tripId, itineraryData) => {
+  await getTripById(tripId, userId);
+
+  if (
+    new Date(itineraryData.date) > new Date(trip.startDate) ||
+    new Date(itineraryData.date) < new Date(trip.endDate)
+  ) {
+    throw new ValidationError("Itinerary date must be within the trip dates");
+  }
+
+  const itinerary = await Itinerary.findOneAndUpdate(
+    { _id: id, trip: tripId },
+    itineraryData,
+    {
+      new: true,
     }
-    return deleted;
+  );
+
+  if (!itinerary) {
+    throw new NotFoundError("Itinerary not found");
+  }
+
+  return itinerary;
+};
+
+export const deleteItinerary = async (id, userId, tripId) => {
+  await getTripById(tripId, userId);
+  const itinerary = await Itinerary.findOneAndDelete({ _id: id, trip: tripId });
+  if (!itinerary) {
+    throw new NotFoundError("Itinerary not found");
+  }
+  return itinerary;
 };

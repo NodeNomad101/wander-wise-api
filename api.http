@@ -12,7 +12,8 @@ Content-Type: application/json
 }
 
 ### Get all users
-GET {{BASE_URL}}/users
+GET {{BASE_URL}}/users?limit=1&page=2
+Authorization: Bearer {{token}}
 
 ### Get user by id
 GET {{BASE_URL}}/users/6922dbdb1517c319a9c9d7c1
