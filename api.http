@@ -1,5 +1,6 @@
 @BASE_URL = http://localhost:3000
-@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTIyZGJkYjE1MTdjMzE5YTljOWQ3YzEiLCJpYXQiOjE3NjU3MTAwNjgsImV4cCI6MTc2NjMxNDg2OH0.TqJyzxtCRc4H9IliPrxlmSoz_ZMVjnaZfJYMUwv-n54
+
+@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTIyZGJkYjE1MTdjMzE5YTljOWQ3YzEiLCJpYXQiOjE3NjYzMTQ5NDQsImV4cCI6MTc5Nzg1MDk0NH0.ugY7aoSvaC4gqH3gfvPqZyj3ecK9kC8pE5673Ir0Cf4
 
 ### Create a new user
 POST {{BASE_URL}}/users
@@ -30,23 +31,26 @@ Content-Type: application/json
 DELETE {{BASE_URL}}/users/6922dbdb1517c319a9c9d7c1
 
 ### Create a new baggage
-POST {{BASE_URL}}/baggage
+POST {{BASE_URL}}/693e9c0b9f21f09230294cff/baggages
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
-    "name": "Red Suitcase",
-    "completed": false
+    "name": "Red Suitcase"
 }
 
 ### Get all baggage
-GET {{BASE_URL}}/baggage
+GET {{BASE_URL}}/baggages
+Authorization: Bearer {{token}}
 
 ### Get baggage by id
-GET {{BASE_URL}}/baggage/691af6ce679594af902955ef
+GET {{BASE_URL}}/693e9c0b9f21f09230294cff/baggages
+Authorization: Bearer {{token}}
 
 ### Update baggage
-PATCH {{BASE_URL}}/baggage/691af6ce679594af902955ef
+PATCH {{BASE_URL}}/6947d47655b7b448ddd190b5
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
     "name": "Blue Suitcase",
@@ -54,7 +58,8 @@ Content-Type: application/json
 }
 
 ### Delete baggage
-DELETE {{BASE_URL}}/baggage/691af6ce679594af902955ef
+DELETE {{BASE_URL}}/693e9c0b9f21f09230294cff/baggages/6945308e860c5fd018a21e4f
+Authorization: Bearer {{token}}
 
 ### Login user
 POST {{BASE_URL}}/auth/login
@@ -80,3 +85,7 @@ Authorization: Bearer {{token}}
     "destinations":["Moon","Mars","Jupiter"]
 
 }
+
+### Get all trips
+GET {{BASE_URL}}/trips
+Authorization: Bearer {{token}}

@@ -26,7 +26,7 @@ export const getBaggageById = async (id, userId, tripId) => {
 };
 
 export const updateBaggage = async (id, userId, tripId, baggageData) => {
-  await getTripById(baggageData.trip, baggageData.user);
+  await getTripById(tripId, userId);
   const baggage = await Baggage.findOneAndUpdate(
     { _id: id, user: userId, trip: tripId },
     baggageData,
@@ -41,7 +41,7 @@ export const updateBaggage = async (id, userId, tripId, baggageData) => {
 };
 
 export const deleteBaggage = async (id, userId, tripId) => {
-  await getTripById(baggageData.trip, baggageData.user);
+  await getTripById(tripId, userId);
   const baggage = await Baggage.findOneAndDelete({
     _id: id,
     user: userId,

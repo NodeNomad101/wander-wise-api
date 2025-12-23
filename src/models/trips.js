@@ -57,7 +57,16 @@ const TripSchema = new Schema({
     },
   ],
   budget: BudgetSchema,
+  
+  collaborators: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
 });
+
+
 
 TripSchema.pre("findOneAndUpdate", function () {
   const expenses = this.getUpdate().budget?.expenses;

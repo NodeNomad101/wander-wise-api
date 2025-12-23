@@ -1,5 +1,7 @@
 import Trip from "../models/trips.js";
 import NotFoundError from "../errors/not-found-error.js";
+import ConflictError from "../errors/conflict-error.js";
+import { get } from "mongoose";
 
 export const createTrip = async (tripData) => {
   const trip = await Trip.create(tripData);
@@ -37,4 +39,26 @@ export const deleteTrip = async (id, userId) => {
     throw new NotFoundError("Trip not found");
   }
   return trip;
+};
+
+export const inviteCollaborator = async(id, userId,collaboratorEmails) => {
+  const trip = await getTripById(id, userId);
+  if(
+    trip.collaborators?.some( (collaborator) =>
+      collaboratorEmails.includes(collaborator.email)
+  )
+  ){
+    throw new ConflictError("Collaborator already invited");
+  }
+
+
+await sendMail(collaboratorEmails.join(","), "Trip Invitation", {
+  link: `http://localhost:3000/trips/${id}`,
+  title: trip.title,
+  startDate: trip.startDate,
+  endDate: trip.endDate,
+  name: trip.user.name,
+});
+
+return { message: "Invitation sent successfully" };
 };
