@@ -1,7 +1,6 @@
 @BASE_URL = http://localhost:3000
 
-@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTIyZGJkYjE1MTdjMzE5YTljOWQ3YzEiLCJpYXQiOjE3NjYzMTQ5NDQsImV4cCI6MTc5Nzg1MDk0NH0.ugY7aoSvaC4gqH3gfvPqZyj3ecK9kC8pE5673Ir0Cf4
-
+@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTIyZGJkYjE1MTdjMzE5YTljOWQ3YzEiLCJpYXQiOjE3NjY1NzM0MzgsImV4cCI6MTc5ODEwOTQzOH0.Y8_4GSesB101igo1v8eRy6PK0d8W0lSjGI2_iaN_PB0
 ### Create a new user
 POST {{BASE_URL}}/users
 Content-Type: application/json
@@ -89,3 +88,87 @@ Authorization: Bearer {{token}}
 ### Get all trips
 GET {{BASE_URL}}/trips
 Authorization: Bearer {{token}}
+
+### Get trip by id
+GET {{BASE_URL}}/trips/693e9c0b9f21f09230294cff
+Authorization: Bearer {{token}}
+
+### Update trip
+PATCH {{BASE_URL}}/trips/693e9c0b9f21f09230294cff
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "title":"Trip to the Saturn"
+}
+
+### Delete trip
+DELETE {{BASE_URL}}/trips/693e9c0b9f21f09230294cff
+Authorization: Bearer {{token}}
+
+### Create a new itinerary
+POST {{BASE_URL}}/693e9c0b9f21f09230294cff/itineraries
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "title":"Visit the lunar base",
+    "description":"Tour of the moon base",
+    "date":"2025-12-15",
+    "activities":[
+        {
+            "name":"Lunar rover ride",
+            "time":"10:00 AM",
+            "description":"Ride the lunar rover around the moon base",
+            "notes":[
+                "Wear comfortable clothes",
+                "Bring sunscreen"
+            ]
+
+        },
+        {
+            "name":"Moonwalk",
+            "time":"2:00 PM"
+            "description":"Walk on the surface of the moon",
+            "notes":[
+                "Stay close to the base",
+                "Follow safety protocols"
+            ]
+        }
+    ]
+}
+
+### Get all itineraries
+GET {{BASE_URL}}/693e9c0b9f21f09230294cff/itineraries
+Authorization: Bearer {{token}}
+
+### Get itinerary by id
+GET {{BASE_URL}}/itineraries/6950f4e2d3f4c8b1e4a7c9d2
+Authorization: Bearer {{token}}
+
+### Update itinerary
+PATCH {{BASE_URL}}/itineraries/6950f4e2d3f4c8b1e4a7c9d2
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "title":"Visit the Mars base"
+}
+
+### Delete itinerary
+DELETE {{BASE_URL}}/itineraries/6950f4e2d3f4c8b1e4a7c9d2
+Authorization: Bearer {{token}}
+
+### Invite collaborator to trip
+POST {{BASE_URL}}/trips/693e9c0b9f21f09230294cff/invite
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "collaboratorEmails": [
+        "dbhattarai387@gmail.com",
+        "niteshkdk619@gmail.com",
+        "pranish.dahal980@gmail.com"
+    ]
+}
+

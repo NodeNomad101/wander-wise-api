@@ -1,7 +1,8 @@
 import Trip from "../models/trips.js";
 import NotFoundError from "../errors/not-found-error.js";
 import ConflictError from "../errors/conflict-error.js";
-import { get } from "mongoose";
+import sendMail from "../utils/send-mail.js";
+import jwt from "jsonwebtoken";
 
 export const createTrip = async (tripData) => {
   const trip = await Trip.create(tripData);
@@ -14,7 +15,10 @@ export const getTrips = async (userId) => {
 };
 
 export const getTripById = async (id, userId) => {
-  const trip = await Trip.findOne({ _id: id, user: userId });
+  const trip = await Trip.findOne({ _id: id, user: userId })
+    .populate("collaborators")
+    .populate("user", "name email");
+
   if (!trip) {
     throw new NotFoundError("Trip not found");
   }
@@ -41,24 +45,29 @@ export const deleteTrip = async (id, userId) => {
   return trip;
 };
 
-export const inviteCollaborator = async(id, userId,collaboratorEmails) => {
+export const inviteCollaborator = async (id, userId, collaboratorEmails) => {
   const trip = await getTripById(id, userId);
-  if(
-    trip.collaborators?.some( (collaborator) =>
+  if (
+    trip.collaborators?.some((collaborator) =>
       collaboratorEmails.includes(collaborator.email)
-  )
-  ){
+    )
+  ) {
     throw new ConflictError("Collaborator already invited");
   }
 
+  const token = jwt.sign({ tripId: id }, process.env.JWT_SECRET_KEY, {
+    expiresIn: "1h",
+  });
 
-await sendMail(collaboratorEmails.join(","), "Trip Invitation", {
-  link: `http://localhost:3000/trips/${id}`,
-  title: trip.title,
-  startDate: trip.startDate,
-  endDate: trip.endDate,
-  name: trip.user.name,
-});
+  const invitationLink = `${process.env.BASE_URL}/trips/${id}/invite/accept?token=${token}`;
 
-return { message: "Invitation sent successfully" };
+  await sendMail(collaboratorEmails.join(","), "Trip Invitation", {
+    link: invitationLink,
+    title: trip.title,
+    startDate: trip.startDate.toDateString(),
+    endDate: trip.endDate.toDateString(),
+    name: trip.user.name,
+  });
+
+  return { message: "Invitation sent successfully" };
 };

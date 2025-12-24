@@ -19,7 +19,9 @@ ITINERARY_ROUTER.post(
   useValidator(createItineraryValidator),
   async (req, res, next) => {
     try {
-      const itinerary = await createItinerary(req.body);
+      const itinerary = await createItinerary({...req.body,
+        trip: req.params.tripId, 
+        user: req.user._id });
       res.status(201).json(itinerary);
     } catch (error) {
       next(error);
